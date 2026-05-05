@@ -43,7 +43,7 @@ export default function SignupPage() {
       </div>
 
       {/* Center */}
-      <div className="flex-1 flex items-center justify-center px-4">
+      <div className="flex-1 flex items-center justify-center p-4">
 
         <div className="w-full max-w-md">
 
@@ -149,20 +149,7 @@ export default function SignupPage() {
               <div className="flex-1 h-px bg-border" />
             </div>
 
-            {/* Demo */}
-            <button
-              onClick={() => {
-                localStorage.setItem(
-                  "user",
-                  JSON.stringify({ email: "demo@example.com" })
-                );
-                router.push("/chat");
-              }}
-              className="w-full border border-border py-3 rounded-lg hover:bg-muted transition text-sm font-medium"
-            >
-              Try Demo
-            </button>
-
+        
             {/* Login */}
             <p className="text-center text-sm text-muted-foreground mt-6">
               Already have an account?{" "}
