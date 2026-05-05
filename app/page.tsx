@@ -18,10 +18,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 export default function Home() {
   const router = useRouter();
 
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) router.push("/chat");
-  }, [router]);
+  
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">

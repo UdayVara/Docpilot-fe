@@ -102,19 +102,6 @@ export default function LoginPage() {
               <div className="flex-1 h-px bg-border" />
             </div>
 
-            {/* Demo */}
-            <button
-              onClick={() => {
-                localStorage.setItem(
-                  "user",
-                  JSON.stringify({ email: "demo@example.com" })
-                );
-                router.push("/chat");
-              }}
-              className="w-full border border-border py-3 rounded-lg hover:bg-muted transition text-sm font-medium"
-            >
-              Try Demo
-            </button>
 
             {/* Signup */}
             <p className="text-center text-sm text-muted-foreground mt-6">
