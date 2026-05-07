@@ -35,7 +35,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col relative overflow-hidden">
       
       {/* Theme Toggle */}
       <div className="absolute top-6 right-6">
@@ -56,7 +56,7 @@ export default function SignupPage() {
           </div>
 
           {/* Card */}
-          <div className="bg-card border border-border rounded-2xl p-8 shadow-sm">
+          <div className="bg-card border border-border rounded-2xl p-8 shadow-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
 
             {/* Heading */}
             <div className="mb-6">
@@ -85,7 +85,7 @@ export default function SignupPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="John Doe"
-                  className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-4 py-3 bg-background border border-border rounded-lg transition-all duration-200 hover:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                   required
                 />
               </div>
@@ -99,7 +99,7 @@ export default function SignupPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-4 py-3 bg-background border border-border rounded-lg transition-all duration-200 hover:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                   required
                 />
               </div>
@@ -113,7 +113,7 @@ export default function SignupPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-4 py-3 bg-background border border-border rounded-lg transition-all duration-200 hover:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
                   required
                 />
               </div>
@@ -135,10 +135,10 @@ export default function SignupPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-primary text-primary-foreground py-3 rounded-lg font-medium flex items-center justify-center gap-2 hover:opacity-90 transition mt-4"
+                className=" group w-full bg-primary text-primary-foreground py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] mt-4"
               >
                 {isLoading ? "Creating account..." : "Create Account"}
-                {!isLoading && <ArrowRight className="w-4 h-4" />}
+                {!isLoading && <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />}
               </button>
             </form>
 
