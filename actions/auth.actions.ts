@@ -1,21 +1,22 @@
 "use server";
 
 import { signIn, signOut, auth } from "@/auth";
-import { authService } from "@/services/auth.service";
+import { signupService } from "@/services/auth.service";
 import { SignupCredentials } from "@/types/auth";
 import { AuthError } from "next-auth";
 
 export async function handleSignup(data: SignupCredentials) {
   try {
-    const result = await authService.signup(data);
-    
-    if (result.success) {
+    const result = await signupService(data);
+    console.log("result",result)
+    if (result?.statusCode === 201) {
       // Auto login after signup
       return await handleLogin({ email: data.email, password: data.password });
     }
     
     return { success: false, message: result.message || "Signup failed" };
   } catch (error: any) {
+    console.log("error",error)
     return { 
       success: false, 
       message: error?.response?.data?.message || error?.message || "Something went wrong" 
@@ -25,11 +26,13 @@ export async function handleSignup(data: SignupCredentials) {
 
 export async function handleLogin(credentials: any) {
   try {
+    console.log("credentials",credentials)
     await signIn("credentials", {
       email: credentials.email,
       password: credentials.password,
       redirect: false,
     });
+    console.log("login")
     return { success: true };
   } catch (error) {
     if (error instanceof AuthError) {
@@ -40,6 +43,7 @@ export async function handleLogin(credentials: any) {
           return { success: false, message: "Something went wrong." };
       }
     }
+    console.log("error",error)
     throw error;
   }
 }

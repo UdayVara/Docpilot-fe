@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { handleLogin } from "@/actions/auth.actions";
 
 const loginSchema = z.object({
   email: z
@@ -27,6 +28,7 @@ export default function LoginPage() {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const {
     register,
@@ -38,15 +40,20 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
+    setError("");
 
-    setTimeout(() => {
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ email: data.email })
-      );
-
-      router.push("/chat");
-    }, 800);
+    try {
+      const result = await handleLogin(data);
+      if (result.success) {
+        router.push("/chat");
+      } else {
+        setError(result.message || "Invalid credentials");
+      }
+    } catch (err) {
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -94,6 +101,13 @@ export default function LoginPage() {
                 Enter your credentials to continue
               </p>
             </div>
+
+            {/* Error Message */}
+            {error && (
+              <div className="bg-destructive/10 border border-destructive/30 text-destructive text-sm rounded-xl px-4 py-3 mb-6 text-center animate-in fade-in slide-in-from-top-2 duration-300">
+                {error}
+              </div>
+            )}
 
             {/* Form */}
             <form

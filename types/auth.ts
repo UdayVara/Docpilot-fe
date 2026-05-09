@@ -8,17 +8,15 @@ export interface User {
 export interface AuthResponse {
   success: boolean;
   message: string;
-  data?: {
-    user: User;
-    token: string;
-  };
+  statusCode: number;
+  user?: any;
+  access_token?: string;
 }
 
 export interface SignupCredentials {
   name: string;
   email: string;
   password: string;
-  phone?: string;
 }
 
 export interface LoginCredentials {

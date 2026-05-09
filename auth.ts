@@ -1,39 +1,37 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { loginService } from "@/services/auth.service";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
       credentials: {
-        name: { label: "name" },
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
-        isSignup: { label: "signup", type: "boolean" }
       },
-     async authorize(credentials) {
-  if (!credentials) return null;
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) return null;
 
-  const name = String(credentials.name ?? "");
-  const email = String(credentials.email ?? "");
-  const password = String(credentials.password ?? "");
-  const isSignup = credentials.isSignup === "true" || credentials.isSignup === true;
+        try {
+          const response = await loginService({
+            email: credentials.email as string,
+            password: credentials.password as string,
+          });
 
-  if (!email || !password) return null;
-
-  if (isSignup) {
-    return {
-      id: "1",
-      name,
-      email,
-    };
-  }
-
-  return {
-    id: "2",
-    name,
-    email,
-  };
-},
+          if (response.statusCode == 200 && response.user) {
+            return {
+              id: response.user.id,
+              name: response.user.name,
+              email: response.user.email,
+              token: response.access_token,
+            };
+          }
+          return null;
+        } catch (error) {
+          console.error("Auth authorize error:", error);
+          return null;
+        }
+      },
     }),
   ],
 
@@ -43,17 +41,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
-        }
+        token.token = (user as any).token;
+      }
       return token;
     },
 
     async session({ session, token }) {
-      if (session.user && token.email) {
+      if (session.user) {
         session.user.id = token.id as string;
         session.user.name = token.name;
-        session.user.email = token.email;
+        session.user.email = token.email as string;
+        (session.user as any).token = token.token;
       }
       return session;
     },
+  },
+  pages: {
+    signIn: "/login",
   },
 });

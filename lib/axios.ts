@@ -2,7 +2,7 @@
 // import { getUserClient } from "@/actions/auth.actions";
 // import { auth } from "@/auth";
 // import { auth } from "@/auth";
-import { getUserClient, handleSignout } from "@/actions/auth.actions";
+// import { getUserClient, handleSignout } from "@/actions/auth.actions";
 import axios from "axios";
 // import { getSession } from "next-auth/react";
 
@@ -13,27 +13,27 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config) => {
-    let access_token: string = '';
+    const access_token: string = '';
     // if(localStorage.getItem("token")){
     //   access_token = localStorage.getItem("token")
     // }
     const isServer = typeof window === 'undefined'
     if (isServer) {
-      const userObj = await getUserClient();
-      if(userObj?.success){
-        const token = userObj?.data?.token
-        if (token) {
-          access_token = token || ''
-        }
-      }
+      // const userObj = await getUserClient();
+      // if(userObj?.success){
+      //   const token = userObj?.data?.token
+      //   if (token) {
+      //     access_token = token || ''
+      //   }
+      // }
     } else {
-      const userObj = await getUserClient();
-      if(userObj?.success){
-        const token = userObj?.data?.token
-        if (token) {
-          access_token = token || ''
-        }
-      }
+      // const userObj = await getUserClient();
+      // if(userObj?.success){
+      //   const token = userObj?.data?.token
+      //   if (token) {
+      //     access_token = token || ''
+      //   }
+      // }
     }
     if (access_token) {
       if (!config.headers["authorization"]) {
@@ -55,13 +55,13 @@ axiosInstance.interceptors.response.use(
   },
   async function (error) {
     console.log("Axios Response Error : ",error?.response?.status)
-    if(error?.response?.status === 401){
-      await handleSignout()
-      // Redirect to login page
-      window.location.href = "/";
-    }
+    // if(error?.response?.status === 401){
+    //   await handleSignout()
+    //   // Redirect to login page
+    //   window.location.href = "/";
+    // }
     // console.log('axios error:', error);
-    console.log("Axios Response Data : ",error.response.data)
+    console.log("Axios Response Data : ", error?.response?.data)
     return Promise.reject(
       (error.response && error.response.data) || "Something went wrong"
     );

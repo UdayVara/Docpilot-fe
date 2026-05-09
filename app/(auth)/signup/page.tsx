@@ -4,7 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { handleSignup as signupAction } from "@/actions/auth.actions";
 import { FileText, ArrowRight } from "lucide-react";
+
 
 export default function SignupPage() {
   const router = useRouter();
@@ -28,10 +30,20 @@ export default function SignupPage() {
 
     setIsLoading(true);
 
-    setTimeout(() => {
-      localStorage.setItem("user", JSON.stringify({ name, email }));
-      router.push("/chat");
-    }, 800);
+    try {
+      const result = await signupAction({ name, email, password });
+      console.log("result",result)
+      if (result.success) {
+        router.push("/chat");
+      } else {
+        setError(result.message || "Signup failed. Please try again.");
+      }
+    } catch (err) {
+      setError("An unexpected error occurred. Please try again.");
+      console.log("Signup error:", err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
