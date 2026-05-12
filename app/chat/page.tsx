@@ -160,7 +160,7 @@ export default function ChatPage() {
           <div className="px-3 py-2 bg-secondary/30 rounded-lg">
             <p className="text-xs text-muted-foreground">Logged in as</p>
             <p className="font-medium truncate">
-              {user.email || "demo@example.com"}
+              {user.name || "User"}
             </p>
           </div>
           <button
