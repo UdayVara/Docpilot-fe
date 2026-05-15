@@ -3,6 +3,7 @@
 // import { auth } from "@/auth";
 // import { auth } from "@/auth";
 // import { getUserClient, handleSignout } from "@/actions/auth.actions";
+import { getUserClient } from "@/actions/auth.actions";
 import axios from "axios";
 // import { getSession } from "next-auth/react";
 
@@ -13,27 +14,17 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config) => {
-    const access_token: string = '';
+    let access_token: string = '';
     // if(localStorage.getItem("token")){
     //   access_token = localStorage.getItem("token")
     // }
-    const isServer = typeof window === 'undefined'
-    if (isServer) {
-      // const userObj = await getUserClient();
-      // if(userObj?.success){
-      //   const token = userObj?.data?.token
-      //   if (token) {
-      //     access_token = token || ''
-      //   }
-      // }
-    } else {
-      // const userObj = await getUserClient();
-      // if(userObj?.success){
-      //   const token = userObj?.data?.token
-      //   if (token) {
-      //     access_token = token || ''
-      //   }
-      // }
+    // const isServer = typeof window === 'undefined'
+    const userObj = await getUserClient();
+    if(userObj?.success){
+      const token = userObj?.data?.token
+      if (token) {
+        access_token = token || ''
+      }
     }
     if (access_token) {
       if (!config.headers["authorization"]) {
